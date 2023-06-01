@@ -46,12 +46,15 @@ Route::post('/patients/forgotProcess', [PatientController::class, 'forgotProcess
 Route::post('/patients/loginProcess', [PatientController::class, 'loginProcess'])->name('patients.loginProcess');
 Route::get('/patients/login', [PatientController::class, 'login'])->name('patients.login');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
-Route::resource('patients', PatientController::class)->except(['create']);
 
 
 Route::middleware('auth:patient')->group(function () {
+    Route::get('/patients/dashboard/doctorview/{doctor_id}/{patient_id}', [PatientController::class, 'doctorview'])->name('patients.doctorview');
     Route::get('/patients/dashboard/{id}', [PatientController::class, 'dashboard'])->name('patients.dashboard');
 });
+
+Route::resource('patients', PatientController::class)->except(['create']);
+
 Route::post('/admins/loginProcess', [AdminController::class, 'loginProcess'])->name('admins.loginProcess');
 Route::get('/admins/login', [AdminController::class, 'login'])->name('admins.login');
 

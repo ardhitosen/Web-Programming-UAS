@@ -132,32 +132,6 @@
                     <p>This is your patient dashboard. View doctors and view your reservations here.</p>
                 </div>
             </div>
-            <h2>Doctors</h2>
-            <div class="flex flex-wrap mx-4">
-                @foreach ($doctors as $doctor)
-                    <div class="doctor-card mx-4">
-                        <img src="{{ asset('storage/' . $doctor->doctor_photo) }}" alt="Doctor Photo" class="rounded-full w-40 h-40 object-cover mx-auto mb-4">
-                        <h3 class="text-lg font-bold mb-2">{{ $doctor->name }}</h3>
-                        <p class="mb-2">Type: {{ $doctor->type }}</p>
-                        <p class="mb-2">Schedule:</p>
-                        <ul>
-                            @php
-                                $schedules = json_decode($doctor->schedule);
-                            @endphp
-                            @foreach ($schedules as $schedule)
-                                @php
-                                    $formattedSchedule = \Carbon\Carbon::parse($schedule)->format('d F Y H:i');
-                                @endphp
-                                <li>{{ $formattedSchedule }}</li>
-                            @endforeach
-                        </ul>
-                        <div class="buttons mt-4">
-                            <a href="{{route('patients.doctorview',['doctor_id' => $doctor->id, 'patient_id'=>$patient->id])}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded">View</a>
-
-                        </div>
-                    </div>
-                @endforeach
-            </div>
         </div>
     </div>
 </body>

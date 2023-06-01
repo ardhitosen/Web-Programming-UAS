@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -148,9 +149,18 @@ class PatientController extends Controller
     public function dashboard($id)
     {
         $patient = Patient::findOrFail($id);
+        $doctors = Doctor::all();
         if ($patient->id !== Auth::guard('patient')->id()) {
             return view('patients.index');
         }
-        return view('patients.dashboard', compact('patient'));
+        return view('patients.dashboard', compact('patient','doctors'));
+    }
+
+    public function doctorview($doctor_id,$patient_id)
+    {
+        
+        $doctor = Doctor::findOrFail($doctor_id);
+        $patient = Patient::findOrFail($patient_id);
+        return view('patients.doctorview', compact('patient','doctor'));
     }
 }
