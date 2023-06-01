@@ -73,6 +73,16 @@
             align-items: center;
         }
 
+        .reviews {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .doctor-card img {
             width: 150px;
             height: 150px;
@@ -132,8 +142,38 @@
                     <p>This is your patient dashboard. View doctors and view your reservations here.</p>
                 </div>
             </div>
+    
+            <div class="p-6">
+                <div class="doctor-card">
+                    <img src="{{ asset('storage/' . $doctor->doctor_photo) }}" alt="Doctor's Image">
+                    <h3>{{ $doctor->name }}</h3>
+                    <p>{{ $doctor->type}}</p>
+    
+                    <h4>Reviews</h4>
+                    <div class="reviews">
+                        @foreach ($reservations as $reservation)
+                            @if ($reservation->review)
+                                <p>{{ $reservation->review }}</p>
+                            @else
+                                <p>No review available</p>
+                            @endif
+                        @endforeach
+                    </div>
+    
+                    <h4>Make a Reservation</h4>
+                    @if ($canLeaveReview)
+                    <p>test</p>
+                    @else
+                    @endif
+                    <form action="" method="POST">
+                        @csrf
+                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                        <button type="submit">Make Reservation</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-</body>
+    </body>
 
 </html>

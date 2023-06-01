@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\Reservation;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
 
@@ -158,9 +159,12 @@ class PatientController extends Controller
 
     public function doctorview($doctor_id,$patient_id)
     {
-        
         $doctor = Doctor::findOrFail($doctor_id);
+        $reservations = Reservation::where('doctor_id',$doctor_id)->get();
+        $canLeaveReview = $reservations->contains(function ($reservation) {
+            return $reservation->reviews === null;
+        });
         $patient = Patient::findOrFail($patient_id);
-        return view('patients.doctorview', compact('patient','doctor'));
+        return view('patients.doctorview', compact('patient','doctor','reservations','canLeaveReview'));
     }
 }
