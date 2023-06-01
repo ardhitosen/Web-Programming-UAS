@@ -10,7 +10,7 @@ use App\Models\Patient;
 use App\Models\Reservation;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Storage;
 
 class PatientController extends Controller
 {
@@ -166,5 +166,11 @@ class PatientController extends Controller
         });
         $patient = Patient::findOrFail($patient_id);
         return view('patients.doctorview', compact('patient','doctor','reservations','canLeaveReview'));
+    }
+
+    public function profile($id)
+    {
+        $patient = Patient::findorfail($id);
+        return view('patients.profile', ['patient' => $patient]);
     }
 }
