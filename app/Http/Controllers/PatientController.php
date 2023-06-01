@@ -33,6 +33,11 @@ class PatientController extends Controller
         return view('patients.login');
     }
 
+    public function forgot()
+    {
+        return view('patients.forgot');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -111,6 +116,33 @@ class PatientController extends Controller
         } else {
             return redirect()->back()->withErrors('Invalid credentials');
         }
+    }
+
+    public function forgotProcess(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+            'recovery_code' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $patient = Patient::where('email', $request->email)
+        ->where('recovery_code', $request->recovery_code)
+        ->first();
+
+        if (!$patient) {
+            return redirect()->back()->withErrors(['recovery_code' => 'Invalid.'])->withInput();
+        }
+
+        $patient->password = Hash::make($request->password);
+        $patient->save();
+
+
+        return redirect()->route('patients.login')->with('success', 'Succesful!');
     }
 
     public function dashboard($id)

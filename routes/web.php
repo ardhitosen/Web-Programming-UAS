@@ -40,6 +40,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::put('/admins/dashboard/reservations/{id}/decline', [ReservationController::class, 'decline'])->name('admins.reservations.decline');
     
 });
+
+Route::get('/patients/forgot', [PatientController::class, 'forgot'])->name('patients.forgot');
+Route::post('/patients/forgotProcess', [PatientController::class, 'forgotProcess'])->name('patients.forgotProcess');
 Route::post('/patients/loginProcess', [PatientController::class, 'loginProcess'])->name('patients.loginProcess');
 Route::get('/patients/login', [PatientController::class, 'login'])->name('patients.login');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
