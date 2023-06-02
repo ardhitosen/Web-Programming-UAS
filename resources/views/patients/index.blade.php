@@ -84,7 +84,7 @@
     <img src="{{ asset('images/indexpicture.png') }}" alt="indeximg">
     <div class="image-overlay">
       <h1 class="font-roboto font-bold text-8xl md:text-9xl lg:text-10xl tracking-wider">Your health is an investment not an expense.</h1>
-      <p class="font-roboto text-xl tracking-wider">juan terro juan terro juan terro juan terro juan terro juan terro juan terro juan terro juan terro juan terro</p>
+      <p class="font-roboto text-xl tracking-wider">juan terro juan terro juan terro</p>
       <button class="font-roboto text-lg tracking-wider bg-blue-500 text-white px-4 py-2 mt-4" onclick="window.location.href='/patients/login'">Book Now</button>
     </div>
   </div>

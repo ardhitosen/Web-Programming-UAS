@@ -173,4 +173,10 @@ class PatientController extends Controller
         $patient = Patient::findorfail($id);
         return view('patients.profile', ['patient' => $patient]);
     }
+
+    public function logout()
+    {
+        Auth::guard('patient')->logout();
+        return redirect('/');
+    }
 }

@@ -52,6 +52,7 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/patients/dashboard/doctorview/{doctor_id}/{patient_id}', [PatientController::class, 'doctorview'])->name('patients.doctorview');
     Route::get('/patients/dashboard/{id}', [PatientController::class, 'dashboard'])->name('patients.dashboard');
     Route::get('/patients/profile/{id}',[PatientController::class, 'profile'])->name('patients.profile');
+    Route::post('/patients/logout', [PatientController::class, 'logout'])->name('patients.logout');
 });
 
 Route::resource('patients', PatientController::class)->except(['create']);

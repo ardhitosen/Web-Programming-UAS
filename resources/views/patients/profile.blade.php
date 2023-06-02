@@ -116,7 +116,7 @@
                 <li><a href="{{ route('patients.dashboard', ['id' => $patient->id]) }}">Dashboard</a></li>
                 <li><a href="{{ route('patients.profile', ['id' =>$patient->id]) }}">Profile</a></li>
                 <li>
-                    <form action="" method="POST">
+                    <form action="{{ route('patients.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="w-full px-1 py-1 text-left"
                             style="color: #303030; background-color: #f7f7f7;">Logout</button>
