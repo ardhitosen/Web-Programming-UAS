@@ -123,7 +123,7 @@
     <div class="flex">
         <div class="sidebar">
             <ul>
-                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id]) }}">Dashboard</a></li>
+                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id,'type'=>'all']) }}">Dashboard</a></li>
                 <li><a href="{{ route('patients.profile', ['id' =>$patient->id]) }}">Profile</a></li>
                 <li>
                     <form action="{{ route('patients.logout') }}" method="POST">

@@ -114,7 +114,7 @@ class PatientController extends Controller
         if ($patient && Hash::check($credentials['password'], $patient->password)) {
             Auth::guard('patient')->login($patient);
 
-            return redirect()->route('patients.dashboard', ['id' => $patient->id]);
+            return redirect()->route('patients.dashboard', ['id' => $patient->id, 'type'=>'all']);
         } else {
             return redirect()->back()->withErrors('Invalid credentials');
         }
@@ -147,25 +147,35 @@ class PatientController extends Controller
         return redirect()->route('patients.login')->with('success', 'Succesful!');
     }
 
-    public function dashboard($id)
+    public function dashboard($id, $type)
     {
         $patient = Patient::findOrFail($id);
-        $doctors = Doctor::all();
+        if ($type == 'umum') {
+            $doctors = Doctor::where('type', 'Dokter Umum')->get();
+        } elseif ($type == 'spesialis') {
+            $doctors = Doctor::where('type', 'Dokter Spesialis')->get();
+        } else
+        {
+            $doctors = Doctor::all();
+        }
         if ($patient->id !== Auth::guard('patient')->id()) {
             return view('patients.index');
         }
         return view('patients.dashboard', compact('patient','doctors'));
     }
 
+
     public function doctorview($doctor_id,$patient_id)
     {
         $doctor = Doctor::findOrFail($doctor_id);
         $reservations = Reservation::where('doctor_id',$doctor_id)->get();
-        $canLeaveReview = $reservations->contains(function ($reservation) {
-            return $reservation->reviews === null;
-        });
         $patient = Patient::findOrFail($patient_id);
-        return view('patients.doctorview', compact('patient','doctor','reservations','canLeaveReview'));
+        $review = Reservation::where([
+            'patient_id' => $patient_id,
+            'doctor_id' => $doctor_id,
+            'review' => null
+        ])->first();
+        return view('patients.doctorview', compact('patient','doctor','reservations','review'));
     }
 
     public function profile($id)

@@ -113,7 +113,7 @@
     <div class="flex">
         <div class="sidebar">
             <ul>
-                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id]) }}">Dashboard</a></li>
+                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id, 'type'=>'all']) }}">Dashboard</a></li>
                 <li><a href="{{ route('patients.profile', ['id' =>$patient->id]) }}">Profile</a></li>
                 <li>
                     <form action="{{ route('patients.logout') }}" method="POST">
@@ -157,6 +157,13 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <h4>Sort Doctors</h4>
+            <br/>
+            <div class="flexmb-4">
+                <a href="{{ route('patients.dashboard', ['type' => 'umum','id' => $patient->id]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Semua Doktor Umum</a>
+                <a href="{{ route('patients.dashboard', ['type' => 'spesialis','id' => $patient->id]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Semua Doktor Spesialis</a>
+                <a href="{{ route('patients.dashboard', ['type' => 'all','id' => $patient->id]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Semua Doktor</a>
             </div>
         </div>
     </div>

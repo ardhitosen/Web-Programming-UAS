@@ -123,7 +123,7 @@
     <div class="flex">
         <div class="sidebar">
             <ul>
-                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id]) }}">Dashboard</a></li>
+                <li><a href="{{ route('patients.dashboard', ['id' => $patient->id,'type'=>'all']) }}">Dashboard</a></li>
                 <li><a href="{{ route('patients.profile', ['id' =>$patient->id]) }}">Profile</a></li>
                 <li>
                     <form action="{{ route('patients.logout') }}" method="POST">
@@ -148,25 +148,48 @@
                     <img src="{{ asset('storage/' . $doctor->doctor_photo) }}" alt="Doctor's Image">
                     <h3>{{ $doctor->name }}</h3>
                     <p>{{ $doctor->type}}</p>
-    
+                    <h3>Schedules</h3>
+                    <ul>
+                        @php
+                            $schedules = json_decode($doctor->schedule);
+                        @endphp
+                        @foreach ($schedules as $schedule)
+                        @php
+                            $formattedSchedule = \Carbon\Carbon::parse($schedule)->format('d F Y H:i');
+                         @endphp
+                        <li>{{ $formattedSchedule }}</li>
+                        @endforeach
+                    </ul>
+                    <br/>
                     <h4>Reviews</h4>
                     <div class="reviews">
-                        @foreach ($reservations as $reservation)
+                        @forelse ($reservations as $reservation)
                             @if ($reservation->review)
-                                <p>{{ $reservation->review }}</p>
-                            @else
-                                <p>No review available</p>
+                                <p>{{ $reservation->review }} - {{ $reservation->patient->name }}</p>
                             @endif
-                        @endforeach
+                        @empty
+                            <p>No reviews available</p>
+                        @endforelse
                     </div>
     
+                        @if ($review)
+                        <div class="flex flex-col items-center">
+                            <h4 class="text-lg font-semibold mb-2">Leave a Review</h4>
+                            <form action="{{ route('patients.leaveReview', ['reservation_id' => $review->id]) }}" method="POST" class="w-full max-w-xs">
+                                @csrf
+                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                                <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                                <textarea name="review" placeholder="Enter your review"
+                                    class="w-full p-2 border border-gray-300 rounded-md mb-4"></textarea>
+                                <div class="flex justify-center">
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">Submit</button>
+                                </div>
+                            </form>
+                        @endif
                     <h4>Make a Reservation</h4>
-                    @if ($canLeaveReview)
-                    <p>test</p>
-                    @else
-                    @endif
                     <a href="{{ route('patients.reservasi', ['patient_id' => $patient->id, 'doctor_id' => $doctor->id]) }}"
                         class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Reservasi</a>
+                    </div>
                 </div>
             </div>
         </div>

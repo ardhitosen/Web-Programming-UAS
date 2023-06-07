@@ -49,11 +49,12 @@ Route::get('/patients/create', [PatientController::class, 'create'])->name('pati
 
 Route::middleware('auth:patient')->group(function () {
     Route::get('/patients/dashboard/doctorview/{doctor_id}/{patient_id}', [PatientController::class, 'doctorview'])->name('patients.doctorview');
-    Route::get('/patients/dashboard/{id}', [PatientController::class, 'dashboard'])->name('patients.dashboard');
+    Route::get('/patients/dashboard/{id}/{type}', [PatientController::class, 'dashboard'])->name('patients.dashboard');
     // Route::get('/patients/profile/{id}',[PatientController::class, 'profile'])->name('patients.profile');
     Route::post('/patients/logout', [PatientController::class, 'logout'])->name('patients.logout');
     Route::get('/patients/reservasi/{doctor_id}/{patient_id}', [PatientController::class, 'reservasi'])->name('patients.reservasi');
     Route::post('/patients/storeReservasi', [PatientController::class, 'storeReservasi'])->name('patients.storeReservasi');
+    Route::post('/patients/leaveReview', [ReservationController::class, 'leaveReview'])->name('patients.leaveReview');
     Route::get('/patients/profile/{id}',[ReservationController::class, 'viewReservePatient'])->name('patients.profile');
 });
 
