@@ -6,6 +6,7 @@
     use App\Http\Requests\ProfileUpdateRequest;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Http;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Redirect;
     use Illuminate\View\View;
@@ -31,6 +32,19 @@
         {
             $credentials = $request->only('email', 'password');
             $admin = Admin::where('email', $credentials['email'])->first();
+
+            $hCaptchaResponse = $request->input('h-captcha-response');
+            $secretKey = '0x5aDe1898FcA3C3ebdd7837EEAa8Baf6cBa1C7fB0';
+
+            $response = Http::asForm()->post('https://hcaptcha.com/siteverify', [
+                'response' => $hCaptchaResponse,
+                'secret' => $secretKey,
+            ]);
+
+            $responseData = $response->json();
+            if (!$responseData['success']) {
+                return redirect()->back()->withErrors('Invalid captcha');
+            }
 
             if ($admin && $credentials['password'] == $request->password) {
                 Auth::guard('admin')->login($admin);

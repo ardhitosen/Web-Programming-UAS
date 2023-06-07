@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
     <style>
         .navbar {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -64,9 +65,9 @@
             <input type="password" name="password" id="password"
                 class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-300">
         </div>
-
+        <div class="h-captcha" data-sitekey="ddd61fd9-6651-4ab6-ab13-aefe7c1eafb9"></div>
         <button type="submit"
-            class="w-full bg-sky-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition-colors">Login</button>
+            class="w-full bg-sky-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-400 transition-colors">Login</button>
     </form>
     <div class="text-center mt-4">
         <p class="text-gray-700">Admin Email: admin@admin.com, Password: admin</p>
