@@ -61,7 +61,7 @@
 
         <div class="content bg-white flex justify-center items-center">
 
-            <form action="{{ route('doctors.store') }}" method="POST" class="max-w-md w-full bg-white p-8 border border-gray-200 rounded shadow-md" enctype="multipart/form-data">
+            <form action="{{ route('doctors.store')}}" method="POST" class="max-w-md w-full bg-white p-8 border border-gray-200 rounded shadow-md" enctype="multipart/form-data">
                 @csrf
             
                 <div class="mb-4">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Reservation;
+use App\Models\Patient;
 
 use Illuminate\Http\Request;
 
@@ -15,6 +16,16 @@ class ReservationController extends Controller
         $reservations = Reservation::with('doctor', 'patient')->get();
         // ->where('status', 'Waiting Approval')
         return view('admins.reservations',compact('reservations'));
+    }
+
+    public function viewReservePatient($id)
+    {
+        $patient = Patient::find($id);
+        $reservations = Reservation::where('patient_id', $id)
+        ->with('doctor', 'patient')
+        ->get();
+        // ->where('status', 'Waiting Approval')
+        return view('patients.profile',compact('reservations', 'patient'));
     }
 
     public function approve(Request $request, $id)

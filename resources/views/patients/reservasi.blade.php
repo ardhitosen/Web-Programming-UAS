@@ -73,6 +73,16 @@
             align-items: center;
         }
 
+        .reviews {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .doctor-card img {
             width: 150px;
             height: 150px;
@@ -106,16 +116,6 @@
                 opacity: 1;
             }
         }
-
-        .profile-details {
-            margin-bottom: 20px;
-        }
-
-        .profile-detail {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
     </style>
 </head>
 
@@ -134,40 +134,59 @@
                 </li>
             </ul>
         </div>
-
-        <div class="content bg-white">
-            <div class="p-6">
-                <div class="welcome-box">
-                    <h2>Welcome, {{$patient->name}}</h2>
-                    <p>This is your profile.</p>
-                </div>
-            </div>
-            <div class="profile-details">
-                <h2 class="profile-detail">Nama: {{ $patient->name }}</h2>
-                <h2 class="profile-detail">Email: {{ $patient->email }}</h2>
-                <h2 class="profile-detail">Phone: {{ $patient->phone_number }}</h2>
-                <h2 class="profile-detail">Recovery Code: {{ $patient->recovery_code }}</h2>
-            </div>
-
-
-            <h1>List Reservasi:</h1>
-            <div class="max-w-md w-full bg-white p-8 border border-gray-200 rounded shadow-md">
-                @if($reservations->count() > 0)
-                    @foreach($reservations as $reservation)
-                    <div class="reservation-card mb-4">
-                        <img src="{{ asset('storage/' . $reservation->doctor->doctor_photo) }}" alt="Doctor Photo" class="rounded-full w-40 h-40 object-cover mx-auto mb-4">
-                        <p>Doctor: {{ $reservation->doctor->name}}</p>
-                        <p>Reserved At: {{ $reservation->reserved_at }}</p>
-                        <p>Keluhan: {{ $reservation->keluhan }}</p>
-                        <p>Status: {{ $reservation->status }}</p>
-                    </div>
-                    @endforeach
-                @else
-                    <p>Tidak ada reservasi.</p>
-                @endif
-            </div>
-        </div>
     </div>
+    <div class="content bg-white">
+    <form action="{{ route('patients.storeReservasi', ['id_doctor' => $doctor->id, 'id_patient' => $patient->id])}}" method="post">
+        @csrf
+        <div class="mb-4">
+            <label for="dokter" class="block text-gray-700">Nama Dokter</label>
+            <input type="input" name="nama_doctor" id="nama_doctor"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-300" value="{{$doctor->name}}" readonly>
+        </div>
+
+        <div class="mb-4">
+        <ul>
+            @php
+                $schedules = json_decode($doctor->schedule);
+            @endphp
+            @foreach ($schedules as $schedule)
+            @php
+                $formattedSchedule = \Carbon\Carbon::parse($schedule)->format('d F Y H:i');
+             @endphp
+            <li>{{ $formattedSchedule }}</li>
+            @endforeach
+        </ul>
+
+        </div>
+
+        <div class="mb-4">
+            <label for="pasien" class="block text-gray-700">Nama Pasien</label>
+            <input type="input" name="nama_pasien" id="nama_pasien"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-300" value="{{$patient->name}}" readonly>
+        </div>
+        <div class="mb-4">
+            <label for="jadwal" class="block text-gray-700">Jadwal Dokter</label>
+            <select name="jadwal_doctor" id="jadwal_doctor"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-300">
+                @foreach (json_decode($doctor->schedule) as $schedule)
+                    @php
+                        $formattedSchedule = str_replace('T', ' ', $schedule);
+                    @endphp
+                    <option value="{{ $schedule }}">{{ date('d F Y H:i', strtotime($formattedSchedule)) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="keluhan" class="block text-gray-700">Keluhan Pasien</label>
+            <textarea name="keluhan_pasien" id="keluhan_pasien"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-300"></textarea>
+        </div>
+        <div class="mb-4">
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </div>
+    </form>
+</div>
 </body>
 
 </html>

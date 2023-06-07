@@ -47,12 +47,14 @@ Route::post('/patients/loginProcess', [PatientController::class, 'loginProcess']
 Route::get('/patients/login', [PatientController::class, 'login'])->name('patients.login');
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
 
-
 Route::middleware('auth:patient')->group(function () {
     Route::get('/patients/dashboard/doctorview/{doctor_id}/{patient_id}', [PatientController::class, 'doctorview'])->name('patients.doctorview');
     Route::get('/patients/dashboard/{id}', [PatientController::class, 'dashboard'])->name('patients.dashboard');
-    Route::get('/patients/profile/{id}',[PatientController::class, 'profile'])->name('patients.profile');
+    // Route::get('/patients/profile/{id}',[PatientController::class, 'profile'])->name('patients.profile');
     Route::post('/patients/logout', [PatientController::class, 'logout'])->name('patients.logout');
+    Route::get('/patients/reservasi/{doctor_id}/{patient_id}', [PatientController::class, 'reservasi'])->name('patients.reservasi');
+    Route::post('/patients/storeReservasi', [PatientController::class, 'storeReservasi'])->name('patients.storeReservasi');
+    Route::get('/patients/profile/{id}',[ReservationController::class, 'viewReservePatient'])->name('patients.profile');
 });
 
 Route::resource('patients', PatientController::class)->except(['create']);

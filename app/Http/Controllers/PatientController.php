@@ -179,4 +179,36 @@ class PatientController extends Controller
         Auth::guard('patient')->logout();
         return redirect('/');
     }
+
+    public function reservasi($doctor_id, $patient_id)
+    {
+        $patient = Patient::findorfail($patient_id);
+        $doctor = Doctor::findorfail($doctor_id);
+        return view('patients.reservasi', ['patient' => $patient, 'doctor' => $doctor]);
+    }
+
+    public function storeReservasi(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'jadwal_doctor' => 'required',
+            'keluhan_pasien' => 'required',
+         ]);
+         
+         if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+         }
+
+
+        $reservasi = new Reservation();
+        $reservasi->doctor_id = $request->id_doctor;
+        $reservasi->patient_id = $request->id_patient;
+        $reservasi->keluhan = $request->keluhan_pasien;
+        $reservasi->reserved_at = $request->jadwal_doctor;
+        $reservasi->status = "Pending";
+        $reservasi->save();
+
+        $patient = Patient::findOrFail($request->id_patient);
+        $doctors = Doctor::all();
+        return view('patients.dashboard', compact('patient','doctors'));
+    }
 }

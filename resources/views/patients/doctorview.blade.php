@@ -165,12 +165,8 @@
                     <p>test</p>
                     @else
                     @endif
-                    <form action="" method="POST">
-                        @csrf
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                        <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-                        <button type="submit">Make Reservation</button>
-                    </form>
+                    <a href="{{ route('patients.reservasi', ['patient_id' => $patient->id, 'doctor_id' => $doctor->id]) }}"
+                        class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Reservasi</a>
                 </div>
             </div>
         </div>
